@@ -22,13 +22,7 @@ class Speedtestcli:
 
     def metricCollector(self):
         
-
-        try:
-            result=subprocess.run(["speedtest-cli",'--json'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        except Exception as e:
-            self.maindata['status']=0
-            self.maindata['msg']=str(e)
-            return self.maindata
+        result=subprocess.run(["speedtest-cli",'--json'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
 
         if result.returncode==0:
             result=result.stdout.decode()
@@ -47,7 +41,7 @@ class Speedtestcli:
             for c in result['client']:
                 self.maindata["client."+c]=result['client'][c]
         else:
-            self.maindata['msg']=result.stderr
+            self.maindata['msg']=result.stdout.decode()
             self.maindata['status']=0
 
         return self.maindata
